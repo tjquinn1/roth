@@ -25,7 +25,7 @@ SECRET_KEY = '#wddna1f^=1@t)$j1kt&-(z7d-(ts9)&b9+(5!@umu6or5j2rw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['roth1-env.us-east-2.elasticbeanstalk.com']
 
 
 # Application definition
