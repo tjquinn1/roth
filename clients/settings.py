@@ -83,7 +83,7 @@ DATABASES = {
         'NAME': os.environ.get('RDS_DB_NAME', 'aes'),
         'USER': os.environ.get('RDS_USERNAME', 'taylor'),
         'PASSWORD': os.environ.get('RDS_PASSWORD', 'Goodbye35'),
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'HOST': os.environ.get('RDS_HOSTNAME', 'localhost'),   # Or an IP Address that your DB is hosted on
         'PORT': int(os.environ.get('RDS_PORT', '3306')),
     }
 }
