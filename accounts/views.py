@@ -13,6 +13,7 @@ from django.http import HttpResponseRedirect
 import random
 import string
 from django.contrib import messages
+from django.urls import reverse
 
 
 def custom_login(request):
@@ -27,7 +28,7 @@ def custom_login(request):
             if user is not None:
                 auth_login(request, user)
                 messages.success(request, "Welcome {}".format(request.user.first_name))
-                return HttpResponseRedirect('/login_success/')
+                return HttpResponseRedirect(reverse('cts:case'))
             else:
                 messages.error(request, "Your user name or password is incorect")
     return render(request, 'registration/login.html', {'form': form})
@@ -38,7 +39,7 @@ def custom_login(request):
 
 def logout_view(request):
     logout(request)
-    return redirect("/home/")
+    return HttpResponseRedirect(reverse("accounts:login"))
 
 
 class SignUp(generic.CreateView):
