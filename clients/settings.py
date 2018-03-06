@@ -80,11 +80,11 @@ import os
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': os.environ.get(RDS_DB_NAME, 'aes'),
-        'USER': os.environ.get(RDS_USERNAME, 'taylor'),
-        'PASSWORD': os.environ.get(RDS_PASSWORD, 'Goodbye35'),
+        'NAME': os.environ.get('RDS_DB_NAME', 'aes'),
+        'USER': os.environ.get('RDS_USERNAME', 'taylor'),
+        'PASSWORD': os.environ.get('RDS_PASSWORD', 'Goodbye35'),
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-        'PORT': os.environ.get(RDS_PORT, '3306'),
+        'PORT': int(os.environ.get('RDS_PORT', '3306')),
     }
 }
 
