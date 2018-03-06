@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    
+
+    <form action="." method="POST">
+    {{ form }}
+    {% csrf_token %}
+    <input type="submit" value="Submit" />
+    </form>
+
+    {% if results %}
+    <table class="table">
+        
+        <thead>
+            <tr>
+              <th scope="col">First Name</th>
+              <th scope="col">Middle Name</th>
+              <th scope="col">Last Name</th>
+              <th scope="col">DOB</th>
+              <th scope="col">Case Number</th>
+              <th scope="col">Court</th>
+              <th scope="col">TBC</th>
+              <th scope="col">Hours</th>
+              <th scope="col">Docket Number</th>
+              <th scope="col">BAC</th>
+              <th scope="col">Start Date</th>
+              <th scope="col">End Date</th>
+              <th scope="col">Actual End Date</th>
+              <th scope="col">Court Appearence Date</th>
+              <th scope="col">Date of Violation</th>
+              <th scope="col">Charge</th>
+            </tr>
+          </thead>
+          <tbody>
+        
+          {% for r in results %}
+        
+          <tr>
+            <td>{{ r.firstname }}</td>
+            <td>{{ r.middlename }}</td>
+            <td>{{ r.lastname }}</td>
+            <td>{{ r.dob }}</td>
+            <td>{{ r.casenumber }}</td>
+            <td>{{ r.providername }}</td>
+            <td>{{ r.completeby }}</td>
+            <td>{{ r.totaltime }}</td>
+            <td>{{ r.docketnumber }}</td>
+            <td>{{ r.bac }}</td>
+            <td>{{ r.startdate }}</td>
+            <td>{{ r.enddate }}</td>
+            <td>{{ r.actualenddate }}</td>
+            <td>{{ r.courtppearancedate }}</td>
+            <td>{{ r.dateofvio }}</td>
+            <td>{{ r.charge }}</td>
+          </tr>
+        
+
+      {% endfor %}
+    </tbody>
+</table>
+    {% endif %}
+    
+{% endblock %}

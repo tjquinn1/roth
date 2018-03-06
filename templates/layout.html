@@ -1,0 +1,80 @@
+
+{% load static  %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Gidget</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">       
+        <link rel="stylesheet"  type="text/css" href="{% static 'css/base.css' %}" />
+        <link type="text/javascript" href="{% static 'js/app.js' %}"/>
+        <link type="text/javascript" href="{% static 'js/date.js' %}"/>
+       
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="#">Navbar</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item"></li>
+                        {% if user.is_authenticated %}
+                            <a class="nav-link mr-sm-2" href="{% url 'logout'%}?next=/home/">Logout</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Hello {{ user.first_name }}
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#">Profile</a>
+                                <a class="dropdown-item" href="#">Bought Listings</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </li>   
+                        {% else %}
+                        
+                        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login'%}?next={{request.path}}">Login</a></li> 
+                        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:signup' %}">Sign Up</a></li>
+                        
+                        {% endif %} 
+                    </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="container">
+                <div class="message">
+                    {%  if messages %}
+                    
+                        {% for message in messages %}
+                        <div{% if message.tags %} class="alert alert-danger alert-dismissible fade show" role="alert"{% endif %}>{{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+                        </div>
+                    
+                        {% endfor %}
+                    {% endif %}
+                </div> 
+                {% block content %}{% endblock %}
+            </div>
+
+            {% block js %}
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+            <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/livestamp/1.1.2/livestamp.min.js"></script>
+            <script src="https://js.braintreegateway.com/web/dropin/1.8.1/js/dropin.min.js"></script>
+            <script src="{% static 'js/app.js' %}"></script>
+            {% endblock %}
+    </body>
+</html>

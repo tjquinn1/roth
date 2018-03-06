@@ -1,0 +1,34 @@
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container">
+    
+    
+
+    <div class="row">
+        <form  method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="row">
+                <div class="form-group">
+                    {{ form.email.errors }}
+                    <label for="{{ form.email.id_for_label }}">Email</label>
+                    {{ form.email }}
+                </div>
+                <div class="form-group row">
+                    {{ form.password.errors }}
+                    <label for="{{ form.password.id_for_label }}">Password</label>
+                    {{ form.password }}
+                </div>
+            </div>
+     
+    
+    
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+
+
+{% endblock %}
