@@ -1,0 +1,804 @@
+{% extends "layout.html" %}
+{% load cts_extras %}
+{% block content %}
+<div>
+    <div class="row">
+        <strong>This evalaution was completed in {{ psych.totaltime|sec2Mins }} on {{ psych.datecompleted|date:"SHORT_DATE_FORMAT" }} at {{ psych.datecompleted|time }}</strong>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-4">
+            <strong>Your Living Situation</strong>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" onclick="return false;" {{ psych.liv|check:0 }}>
+                <label class="form-check-label" for="defaultCheck1">
+                    housing adequate 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.liv|check:2 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    homeless
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.liv|check:4 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    housing overcrowded 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.liv|check:6 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    dependent on others for housing 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.liv|check:8 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    housing dangerous/deteriorating 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value=""  id="defaultCheck2" onclick="return false;" {{ psych.liv|check:8 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    living companions dysfunctional
+                </label>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <strong>Your Social Support System</strong>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" onclick="return false;" {{ psych.soc|check:0 }}>
+                <label class="form-check-label" for="defaultCheck1">
+                    supportive network 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.soc|check:2 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    few friends 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.soc|check:4 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    substance-use-based friends 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.soc|check:6 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    no friends 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.soc|check:8 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    distant from family of origin
+                </label>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <strong>Your Financial Situation</strong>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" onclick="return false;" {{ psych.fin|check:0 }}>
+                <label class="form-check-label" for="defaultCheck1">
+                    no current financial problems 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.fin|check:2 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    large indebtedness 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.fin|check:4 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    poverty or below poverty income 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.fin|check:6 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    impulsive spending 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.fin|check:8 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    relationship conflicts over finances
+                </label>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-4">
+            <strong>Your Financial Situation</strong>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" onclick="return false;" {{ psych.chi|check:0 }}>
+                <label class="form-check-label" for="defaultCheck1">
+                    outstanding home environment  
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.chi|check:2 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    normal home environment 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.chi|check:4 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    chaotic home environment
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.chi|check:6 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    witnessed physical/verbal/sexual abuse toward others
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.chi|check:8 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    experienced physical/verbal/sexual abuse from others
+                </label>
+            </div>
+        </div>
+        <div class="col-4">
+            <strong>Maritial Status</strong>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" onclick="return false;" {{ psych.msts|check:0 }}>
+                <label class="form-check-label" for="defaultCheck1">
+                    single, never married  
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.msts|check:2 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    Married for  years
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.msts|check:4 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    Divorced for  years.
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.msts|check:6 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    Serious Relationship for  years
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.msts|check:8 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    Number of Children: 
+                </label>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <strong>Your Family Alcohol/Drug Abuse History</strong>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" onclick="return false;" {{ psych.fam|check:0 }}>
+                <label class="form-check-label" for="defaultCheck1">
+                    no family abuse history 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.fam|check:2 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    mother
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.fam|check:4 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    grandparents
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.fam|check:6 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    siblings
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.fam|check:8 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    father 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.fam|check:10 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    uncle(s)/aunt(s) 
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.fam|check:12 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    spouse/significant other 
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.fam|check:14 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    children
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.fam|check:16 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    stepparent/live-in
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <strong>Check All Substances Used - EVER</strong>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.subalc|check:0 }}>
+                        <label class="form-check-label" for="defaultCheck2">
+                            alcohol
+                        </label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <p>Age First Used: {{ psych.subalc|sub:1 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>Age Last Used: {{ psych.subalc|sub:2 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Frequency: {{ psych.subalc|sub:3 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Amount: {{ psych.subalc|sub:4 }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.subamp|check:0 }}>
+                        <label class="form-check-label" for="defaultCheck2">
+                            amphetamines/speed
+                        </label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <p>Age First Used: {{ psych.subamp|sub:1 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>Age Last Used: {{ psych.subamp|sub:2 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Frequency: {{ psych.subamp|sub:3 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Amount: {{ psych.subamp|sub:4 }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.subbar|check:0 }}>
+                        <label class="form-check-label" for="defaultCheck2">
+                            barbiturates/downers
+                        </label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <p>Age First Used: {{ psych.subbar|sub:1 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>Age Last Used: {{ psych.subbar|sub:2 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Frequency: {{ psych.subbar|sub:3 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Amount: {{ psych.subbar|sub:4 }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.subcaf|check:0 }}>
+                        <label class="form-check-label" for="defaultCheck2">
+                            caffeine
+                        </label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <p>Age First Used: {{ psych.subcaf|sub:1 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>Age Last Used: {{ psych.subcaf|sub:2 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Frequency: {{ psych.subcaf|sub:3 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Amount: {{ psych.subcaf|sub:4 }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.subcoc|check:0 }}>
+                        <label class="form-check-label" for="defaultCheck2">
+                            cocaine
+                        </label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <p>Age First Used: {{ psych.subcoc|sub:1 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>Age Last Used: {{ psych.subcoc|sub:2 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Frequency: {{ psych.subcoc|sub:3 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Amount: {{ psych.subcoc|sub:4 }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.subcra|check:0 }}>
+                        <label class="form-check-label" for="defaultCheck2">
+                            crack cocaine
+                        </label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <p>Age First Used: {{ psych.subcra|sub:1 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>Age Last Used: {{ psych.subcra|sub:2 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Frequency: {{ psych.subcra|sub:3 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Amount: {{ psych.subcra|sub:4 }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.subhal|check:0 }}>
+                        <label class="form-check-label" for="defaultCheck2">
+                            hallucinogens (e.g. LSD)
+                        </label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <p>Age First Used: {{ psych.subhal|sub:1 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>Age Last Used: {{ psych.subhal|sub:2 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Frequency: {{ psych.subhal|sub:3 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Amount: {{ psych.subhal|sub:4 }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.subinh|check:0 }}>
+                        <label class="form-check-label" for="defaultCheck2">
+                            inhalants (e.g. glue or gas)
+                        </label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <p>Age First Used: {{ psych.subinh|sub:1 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>Age Last Used: {{ psych.subinh|sub:2 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Frequency: {{ psych.subinh|sub:3 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Amount: {{ psych.subinh|sub:4 }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.submar|check:0 }}>
+                        <label class="form-check-label" for="defaultCheck2">
+                            marijuana or hashish
+                        </label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <p>Age First Used: {{ psych.submar|sub:1 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>Age Last Used: {{ psych.submar|sub:2 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Frequency: {{ psych.submar|sub:3 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Amount: {{ psych.submar|sub:4 }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.subnic|check:0 }}>
+                        <label class="form-check-label" for="defaultCheck2">
+                            nicotine/cigarettes
+                        </label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <p>Age First Used: {{ psych.subnic|sub:1 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>Age Last Used: {{ psych.subnic|sub:2 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Frequency: {{ psych.subnic|sub:3 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Amount: {{ psych.subnic|sub:4 }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.subpcp|check:0 }}>
+                        <label class="form-check-label" for="defaultCheck2">
+                            PCP
+                        </label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <p>Age First Used: {{ psych.subpcp|sub:1 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>Age Last Used: {{ psych.subpcp|sub:2 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Frequency: {{ psych.subpcp|sub:3 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Amount: {{ psych.subpcp|sub:4 }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.subpre|check:0 }}>
+                        <label class="form-check-label" for="defaultCheck2">
+                            PCP
+                        </label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <p>Age First Used: {{ psych.subpre|sub:1 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>Age Last Used: {{ psych.subpre|sub:2 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Frequency: {{ psych.subpre|sub:3 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Amount: {{ psych.subpre|sub:4 }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.suboth|check:0 }}>
+                        <label class="form-check-label" for="defaultCheck2">
+                            Other
+                        </label>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <p>Age First Used: {{ psych.suboth|sub:1 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>Age Last Used: {{ psych.suboth|sub:2 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Frequency: {{ psych.suboth|sub:3 }}</p>
+                </div>
+                <div class="col-2">
+                    <p>	Amount: {{ psych.suboth|sub:4 }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <strong>Consequences of Your Substance Use:</strong>
+        </div>
+        <div class="col-6">
+                <strong>Goals of Your Screening/Education/Treatment</strong>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" onclick="return false;" {{ split|check:0 }}>
+                <label class="form-check-label" for="defaultCheck1">
+                    hangovers  
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ split|check:1 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    assaults
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ split|check:2 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    overdose
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ split|check:3 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    isolation
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ split|check:4 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    withdrawal symptoms
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value=""  id="defaultCheck2" onclick="return false;" {{ split|check:5 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    job loss
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value=""  id="defaultCheck2" onclick="return false;" {{ split|check:6 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    loss of control
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value=""  id="defaultCheck2" onclick="return false;" {{ split|check:7 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    personality change
+                </label>
+            </div>
+        </div>
+
+        <div class="col-2">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" onclick="return false;" {{ split|check:8 }}>
+                <label class="form-check-label" for="defaultCheck1">
+                    sleep disturbance  
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ split|check:9 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    blackouts
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ split|check:10 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    relationship conflicts
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ split|check:11 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    preoccupation
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ split|check:12 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    binges
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value=""  id="defaultCheck2" onclick="return false;" {{ split|check:13 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    tolerance changes
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value=""  id="defaultCheck2" onclick="return false;" {{ split|check:14 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    DUI
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value=""  id="defaultCheck2" onclick="return false;" {{ split|check:15 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    passing out
+                </label>
+            </div>
+        </div>
+
+        <div class="col-2">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" onclick="return false;" {{ split|check:16 }}>
+                <label class="form-check-label" for="defaultCheck1">
+                    seizures 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ split|check:17 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    suicidal impluse
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ split|check:18 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    attempts to control
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ split|check:19 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    attempt to quit
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ split|check:20 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    medical conditions
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value=""  id="defaultCheck2" onclick="return false;" {{ split|check:21 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    legal problems
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value=""  id="defaultCheck2" onclick="return false;" {{ split|check:22 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    Other
+                </label>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" onclick="return false;" {{ psych.goa|check:0 }}>
+                <label class="form-check-label" for="defaultCheck1">
+                    satisfy court order
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.goa|check:2 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    avoid consequences of substance abuse
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.goa|check:4 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    address risk factors
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.goa|check:6 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    decrease consumption/use 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2" onclick="return false;" {{ psych.goa|check:8 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    address contributing factors 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value=""  id="defaultCheck2" onclick="return false;" {{ psych.goa|check:10 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    determine potential risk factors 
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value=""  id="defaultCheck2" onclick="return false;" {{ psych.goa|check:12 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    gain awareness of specific attitudes/behavior patterns 
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value=""  id="defaultCheck2" onclick="return false;" {{ psych.goa|check:14 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    identify thinking errors nd processes 
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value=""  id="defaultCheck2" onclick="return false;" {{ psych.goa|check:16 }}>
+                <label class="form-check-label" for="defaultCheck2">
+                    other
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

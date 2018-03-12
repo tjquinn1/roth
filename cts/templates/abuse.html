@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+<div>
+    <div class="row">
+        <h5>Client Description of Abusive Behaviors</h5>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <strong>Name: </strong> {{ client.firstname }} {{ client.middlename }} {{ client.lastname }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <strong>Date: </strong> {% now "SHORT_DATETIME_FORMAT" %}
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-12">
+            <strong>Summary:</strong>
+        </div>
+        <br>
+        <div class="col-12">
+            {{ abuse.abusesumm }}
+        </div>
+
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-12">
+            <strong>Electronically submitted and signed by {{ client.firstname }} {{ client.middlename }} {{ client.lastname }} on: {{ abuse.abusedate }}</strong>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -25,7 +25,7 @@ SECRET_KEY = '#wddna1f^=1@t)$j1kt&-(z7d-(ts9)&b9+(5!@umu6or5j2rw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['roth1-env.us-east-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['roth1-env.us-east-2.elasticbeanstalk.com', '127.0.0.1']
 
 
 # Application definition
@@ -125,5 +125,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/assets/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'assets')]
 AUTH_USER_MODEL = "accounts.User"

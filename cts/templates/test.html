@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% load cts_extras %}
+{% block content %}
+
+    <div>
+
+        <form action="." method="POST">
+        {{ form }}
+        {% csrf_token %}
+        <input type="submit" value="Submit" />
+        </form>
+        <div>
+            {% if client %}
+                <div class="row">
+                    <h3>{{ client.firstname }} {{ client.middlename }} {{ client.lastname }}</h3>
+                </div>
+                <div class="row">
+                    <div class="col-3"><strong>DOB: </strong>{{ client.dob }}
+                        <br>
+                        <strong>Email: </strong>{{ client.emailaddress }}
+                        <br>
+                        <strong>Phone: </strong>{{ client.homephone }}</div>
+                        <div class="col-3"><strong>Address: </strong>
+                        <br>        
+                            {{ client.address }}  {% if client.address2 %}{{ client.address2 }}{% endif %}
+                        <br>
+                        {{ client.city }} {{ client.state }}  {{ client.zip }}
+                    </div>
+                    <div class="col-3">
+                        <strong>Drivers License: </strong>{{ client.dlstate }} {{ client.dlnumber }}
+                        <strong>Account Balance: </strong>${{ bal }}
+                    </div>
+                </div>
+            {% endif %}
+                    
+            {% if programs %}
+            <h3>Programs</h3>
+                {% for program in programs %}
+                    <div class="row">
+                        <div class="col-12">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="programsMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><strong>Program {{ forloop.counter }}: </strong></button> {{ program.programtype|programtypes }}, {{program.unitcount}} Hour{{program.unitcount|pluralize }} <span class="redText">STATUS: {{ program.actualenddate|status:program.noncompliance }}</span>, {{ program.created|date:"d/m/Y" }} to {{ program.completeby|date:"m/d/Y" }}, Court: {{ program.provider|provider }},{% if program.bac and program.bac != 'N/A' %}BAC: {{ program.bac }},{% endif %} Charge: {{ program.charge }}, Case Number: {{ program.casenumber }},{% if program.docketnumber %} Docket Number: {{ program.docketnumber }}, {% endif %}
+                                <div class="dropdown-menu" aria-labelledby="programsMenu">
+                                    {% if  program|programAbuse %}
+                                    <a class="dropdown-item" href="{% url 'cts:abuse' client_id=client.userid program_id=program.programid %}">Review Abusive Behaviors</a>
+                                    {% endif %}
+                                    <a class="dropdown-item" href="{% url 'cts:psych' program_id=program.programid %}">Psychsocial</a>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+
+            {% if abuses %}
+            <h3>Abuse</h3>
+                {% for abuse in abuses %}
+                    <div class="row">
+                        <div class="col-4">
+                            <strong>Abuse Date: </strong>{{ abuse.abusedate }}
+                        </div>
+                        <div class="col-7">
+                            <strong>Summary: </strong><p>{{ abuse.abusesumm }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+    </div>
+{% endblock %}
