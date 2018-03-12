@@ -6,7 +6,6 @@ app_name = 'cts'
 urlpatterns = [
     # url(r"login/$", views.LoginView.as_view(), name="login")
     url(r"^case/$", views.court_case, name="case"),
-    url(r"^test/$", views.test, name="test"),
     url(r"^abuse/(?P<client_id>\d+)/(?P<program_id>\d+)/$", views.abuse, name="abuse"),
     url(r"^psych/(?P<program_id>\d+)/$", views.psych, name="psych"),
 ]
