@@ -8,4 +8,5 @@ urlpatterns = [
     url(r"^case/$", views.court_case, name="case"),
     url(r"^abuse/(?P<client_id>\d+)/(?P<program_id>\d+)/$", views.abuse, name="abuse"),
     url(r"^psych/(?P<program_id>\d+)/$", views.psych, name="psych"),
+    url(r"^mast/(?P<program_id>\d+)/$", views.mast, name="mast"),
 ]

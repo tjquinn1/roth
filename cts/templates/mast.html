@@ -1,0 +1,443 @@
+{% extends "layout.html" %}
+{% load cts_extras %}
+{% block content %}
+<div>
+    <div class="row">
+        <h2>Standard DUI/Alcohol/Drug Screening Test (MAST) and Results</h2>
+    </div>
+    <div class="row">
+        <strong>MAST Survey Results for Stuart Reed Gold completed on {{ mast.mastdate|date:"SHORT_DATE_FORMAT" }} at {{ mast.mastdate|time }} in {{ mast.totaltime|sec2Mins }} </strong>
+    </div>
+    <div class="row">
+        <strong>MAST Numeric Score = {{ mast.mastscore }}</strong>
+    </div>
+    <div class="row">
+        <strong>Mast Result = {{ mast.mastscore|mastResult }}</strong>
+    </div>
+    <div class="row">
+        <strong>Mast Result = {{ mast.mastscore|mastResult }}</strong>
+    </div>
+    <div class="row">
+        <p>Scoring is based on total points as follows: 0-2 points = Low Risk; 3-5 points = Abuse/early or middle problem drinker; 6 or more points = Alcoholic
+        <br />Points are scored 1 per answer for these responses: 1. No, 2. Yes, 3. Yes, 4. No, 5 thru 22: Yes, multiple 21 and 22 by the number of times.</p>
+    </div>
+    <br>
+    <ol>
+        <div class="row">
+            <li>Do you feel you are a normal drinker? ("normal" - drink as much or less than most other people)</li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" {{ mast.answers|checkYes:1 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkNo:1 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+            
+        <div class="row">
+            <li>Have you ever awakened the morning after some drinking the night before and found that you could not remember a part of the evening?</li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" {{ mast.answers|checkNo:3 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:3 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div> 
+
+        <div class="row">
+            <li>Does any near relative or close friend ever worry or complain about your drinking?</li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" {{ mast.answers|checkNo:5 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:5 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+        
+        <div class="row">
+            <li>Can you stop drinking without difficulty after one or two drinks?</li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" {{ mast.answers|checkYes:7 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkNo:7 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <li>Do you ever feel guilty about your drinking?</li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" {{ mast.answers|checkNo:9 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" {{ mast.answers|checkYes:9 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <li>Have you ever attended a meeting of Alcoholics Anonymous (AA)?</li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" {{ mast.answers|checkNo:11 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:11 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <li>Have you ever gotten into physical fights when drinking?  </li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio"  onclick="return false;" {{ mast.answers|checkNo:13 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:13 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <li>Has drinking ever created problems between you and a near relative or close friend?</li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio"  onclick="return false;" {{ mast.answers|checkNo:15 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:15 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <li>Has any family member or close friend gone to anyone for help about your drinking?</li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio"  onclick="return false;" {{ mast.answers|checkNo:17 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:17 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <li>Have you ever lost friends because of your drinking?</li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio"  onclick="return false;" {{ mast.answers|checkNo:19 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:19 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <li>Have you ever lost friends because of your drinking?</li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio"  onclick="return false;" {{ mast.answers|checkNo:19 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:19 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <li>Have you ever gotten into trouble at work because of drinking? </li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio"  onclick="return false;" {{ mast.answers|checkNo:21 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:21 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <li>Have you ever lost a job because of drinking? </li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio"  onclick="return false;" {{ mast.answers|checkNo:23 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:23 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <li>Have you ever neglected your obligations, your family, or your work for two or more days in a row because you were drinking?</li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio"  onclick="return false;" {{ mast.answers|checkNo:25 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:25 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <li>Do you drink before noon fairly often?</li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio"  onclick="return false;" {{ mast.answers|checkNo:27 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:27 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <li>Have you ever been told you have liver trouble such as cirrhosis?</li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio"  onclick="return false;" {{ mast.answers|checkNo:29 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:29 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <li>After heavy drinking have you ever had delirium tremens (D.T.'s), severe shaking, visual or auditory (hearing) hallucinations?</li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio"  onclick="return false;" {{ mast.answers|checkNo:31 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:31 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <li>Have you ever gone to anyone for help about your drinking?</li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio"  onclick="return false;" {{ mast.answers|checkNo:33 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:33 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <li>Have you ever been hospitalized because of drinking? </li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio"  onclick="return false;" {{ mast.answers|checkNo:35 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:35 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <li>Has your drinking ever resulted in your being hospitalized in a psychiatric ward?</li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio"  onclick="return false;" {{ mast.answers|checkNo:37 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:37 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <li>Have you ever gone to any doctor, social worker, clergyman or mental health clinic for help with any emotional problem in which drinking was part of the problem?</li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio"  onclick="return false;" {{ mast.answers|checkNo:39 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:39 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <li> Have you ever been arrested for driving under the influence of alcohol? </li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio"  onclick="return false;" {{ mast.answers|checkNo:41 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:41 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+            <p>If Yes, how many times? {{ mast.ans21times }}</p>
+        </div>
+
+        <div class="row">
+            <li>Have you ever been arrested, even for a few hours because of other behavior while drinking?</li>
+        </div>
+        <div class="row">
+            <div class="form-check radio">
+                <input class="form-check-input" type="radio"  onclick="return false;" {{ mast.answers|checkNo:43 }}>
+                <label class="form-check-label">
+                    No
+                </label>
+                </div>
+                <div class="form-check radio">
+                <input class="form-check-input" type="radio" onclick="return false;" onclick="return false;" {{ mast.answers|checkYes:43 }}>
+                <label class="form-check-label">
+                    Yes
+                </label>
+            </div>
+            <p>If Yes, how many times? {{ mast.ans22times }}</p>
+        </div>
+
+    </ol>
+</div>
+{% endblock %}

@@ -43,8 +43,12 @@
                                     {% if  program|programAbuse %}
                                     <a class="dropdown-item" href="{% url 'cts:abuse' client_id=client.userid program_id=program.programid %}">Review Abusive Behaviors</a>
                                     {% endif %}
+                                    {% if  client|programPsych %}
                                     <a class="dropdown-item" href="{% url 'cts:psych' program_id=program.programid %}">Psychsocial</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
+                                    {% endif %}
+                                    {% if  program|programMast %}
+                                    <a class="dropdown-item" href="{% url 'cts:mast' program_id=program.programid %}">MAST</a>
+                                    {% endif %}
                                 </div>
 
                         </div>

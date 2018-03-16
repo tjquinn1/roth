@@ -1,5 +1,7 @@
 from django import template
 from ..models import Abusebehav as Abuses
+from ..models import Mastscore as Masts
+from ..models import Psych
 import re
 
 register = template.Library()
@@ -69,6 +71,22 @@ def progamAbuse(program):
     else:
         return False
 
+@register.filter(name='programMast')
+def progamMast(program):
+    masts = Masts.objects.filter(programid=program.programid)
+    if masts:
+        return True
+    else:
+        return False
+
+@register.filter(name='programPsych')
+def progamPsych(client):
+    masts = Psych.objects.filter(clientid=client.userid)
+    if masts:
+        return True
+    else:
+        return False
+
 @register.filter(name='sec2Mins')
 def secondsToMinutes(seconds):
     minutes = seconds / 60
@@ -87,3 +105,26 @@ def checked(livList, index):
 def substance(sub, index):
     split = sub.split(',')
     return split[index]
+
+@register.filter(name='mastResult')
+def mastResult(mastScore):
+    if mastScore < 3:
+        return "Low Risk Abuser"
+    if mastScore > 2 and mastScore < 6:
+        return "Abuse/early or middle problem drinker"
+    if mastScore > 5:
+        return "Alcoholic"
+
+@register.filter(name='checkNo')
+def checkedNo(livList, index):
+    if livList[index] == "0":
+        return "checked"
+    else:
+        return "unchecked"
+
+@register.filter(name='checkYes')
+def checkedYes(livList, index):
+    if livList[index] == "1":
+        return "checked"
+    else:
+        return "unchecked"

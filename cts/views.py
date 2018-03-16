@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import connection
 from .models import Clients, Programs, Finances, Psych
 from .models import Abusebehav as Abuses
+from .models import Mastscore as Masts
 from decimal import Decimal
 
 from collections import namedtuple
@@ -78,3 +79,12 @@ def psych(request, program_id):
 
 
     return render(request, 'psych.html', context)
+
+@login_required
+def mast(request, program_id):
+    context = {}
+    mast = Masts.objects.get(programid = program_id)
+    context['mast'] = mast
+
+
+    return render(request, 'mast.html', context)
