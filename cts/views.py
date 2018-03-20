@@ -375,44 +375,40 @@ def upload_fin(request):
     if request.method == 'POST':
         pathForm = forms.PathForm(request.POST)
         if pathForm.is_valid():
-            path = pathForm.cleaned_data.get('path')
-            try:
-                with open(path, encoding="utf-8") as f:
-                        reader = csv.reader(f)
-                        for row in reader:
-                            fin = Finances.objects.get(financeid=int(row[0]))
-                            if fin:
-                                fin.clientid=int(row[1])
-                                fin.programid=int(row[2])
-                                fin.posterid=int(row[3])
-                                fin.dateposted=datetime.strptime(row[4],'%Y/%m/%d %H:%M:%S')
-                                fin.transactiondate=datetime.strptime(row[5],'%Y/%m/%d %H:%M:%S')
-                                fin.transactiontype=int(row[6])
-                                fin.description=row[7]
-                                fin.amount=Decimal(row[8])
-                                fin.office=int(row[9])
-                                fin.modifiedid=int(row[10])
-                                fin.modificationdate=datetime.strptime(row[11],'%Y/%m/%d %H:%M:%S')
-                                fin.save()
-            except ObjectDoesNotExist:
-                with open(path, encoding="utf-8") as f:
-                    reader = csv.reader(f)
-                    for row in reader:
-
-                        _, created = Finances.objects.update_or_create(
-                                financeid=int(row[0]),
-                                clientid=int(row[1]),
-                                programid=int(row[2]),
-                                posterid=int(row[3]),
-                                dateposted=datetime.strptime(row[4],'%Y/%m/%d %H:%M:%S'),
-                                transactiondate=datetime.strptime(row[5],'%Y/%m/%d %H:%M:%S'),
-                                transactiontype=int(row[6]),
-                                description=row[7],
-                                amount=Decimal(row[8]),
-                                office=int(row[9]),
-                                modifiedid=int(row[10]),
-                                modificationdate=datetime.strptime(row[11],'%Y/%m/%d %H:%M:%S'),
-                            )
+            csv_file = request.FILES['csv_file']
+            decoded_file = csv_file.read().decode('utf-8')
+            io_string = io.StringIO(decoded_file)
+            for row in csv.reader(io_string, delimiter=',', quotechar='"'):
+                try:
+                    fin = Finances.objects.get(financeid=int(row[0]))
+                    if fin:
+                        fin.clientid=int(row[1])
+                        fin.programid=int(row[2])
+                        fin.posterid=int(row[3])
+                        fin.dateposted=datetime.strptime(row[4],'%Y/%m/%d %H:%M:%S')
+                        fin.transactiondate=datetime.strptime(row[5],'%Y/%m/%d %H:%M:%S')
+                        fin.transactiontype=int(row[6])
+                        fin.description=row[7]
+                        fin.amount=Decimal(row[8])
+                        fin.office=int(row[9])
+                        fin.modifiedid=int(row[10])
+                        fin.modificationdate=datetime.strptime(row[11],'%Y/%m/%d %H:%M:%S')
+                        fin.save()
+                except ObjectDoesNotExist:
+                    _, created = Finances.objects.update_or_create(
+                            financeid=int(row[0]),
+                            clientid=int(row[1]),
+                            programid=int(row[2]),
+                            posterid=int(row[3]),
+                            dateposted=datetime.strptime(row[4],'%Y/%m/%d %H:%M:%S'),
+                            transactiondate=datetime.strptime(row[5],'%Y/%m/%d %H:%M:%S'),
+                            transactiontype=int(row[6]),
+                            description=row[7],
+                            amount=Decimal(row[8]),
+                            office=int(row[9]),
+                            modifiedid=int(row[10]),
+                            modificationdate=datetime.strptime(row[11],'%Y/%m/%d %H:%M:%S'),
+                        )
         else:
             context ={
                 'form': pathForm
@@ -422,7 +418,7 @@ def upload_fin(request):
                 'form': forms.PathForm()
             }
 
-    return render(request, 'csv.html', context)
+    return render(request, 'upload_fin.html', context)
 
 
 @login_required
@@ -434,123 +430,120 @@ def upload_psych(request):
     if request.method == 'POST':
         pathForm = forms.PathForm(request.POST)
         if pathForm.is_valid():
-            path = pathForm.cleaned_data.get('path')
-            try:
-                with open(path, encoding="utf-8") as f:
-                        reader = csv.reader(f)
-                        for row in reader:
-                            if row[32] == '':
-                                locked = 99
-                            else:
-                                locked=int(row[32])
-                            if row[31] == '':
-                                bhpconselor = 99
-                            else:
-                                bhpconselor=int(row[31])
-                            if row[30] == '':
-                                conselor = 99
-                            else:
-                                conselor=int(row[30])
-                            if row[3] == '':
-                                date = '1900-01-01 12:00:00'
-                                datecompleted = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
-                            else:
-                                datecompleted=datetime.strptime(row[3],'%Y-%m-%d %H:%M:%S')
-                            pysch = Psych.objects.get(psychid=int(row[0]))
-                            if psych:
-                                pysch.programid=int(row[1])
-                                pysch.clientid=int(row[2])
-                                pysch.datecompleted=datecompleted
-                                pysch.liv=row[4]
-                                pysch.soc=row[5]
-                                pysch.emp=row[6]
-                                pysch.fin=row[7]
-                                pysch.chi=row[8]
-                                pysch.fam=row[9]
-                                pysch.msts=row[10]
-                                pysch.con=row[11]
-                                psych.conother=row[12]
-                                psych.goa=row[13]
-                                psych.goaother=row[14]
-                                psych.notes=row[15]
-                                psych.subused=row[16]
-                                psych.subalc=row[17]
-                                psych.subamp=row[18]
-                                psych.subbar=row[19]
-                                psych.subcaf=row[20]
-                                psych.subcoc=row[21]
-                                psych.subcra=row[22]
-                                psych.subhal=row[23]
-                                psych.subinh=row[24]
-                                psych.submar=row[25]
-                                psych.subnic=row[26]
-                                psych.subpcp=row[27]
-                                psych.subpre=row[28]
-                                psych.suboth=row[29]
-                                psych.conselor=conselor
-                                psych.bhpcounselor=bhpconselor
-                                psych.locked=locked
-                                psych.totaltime=int(row[33])
-                                psych.disabled=int(row[34])
-                                pysch.save()
-            except ObjectDoesNotExist:
-                with open(path, encoding="utf-8") as f:
-                    reader = csv.reader(f)
-                    for row in reader:
-                        if row[32] == '':
-                            locked = 99
-                        else:
-                            locked=int(row[32])
-                        if row[31] == '':
-                            bhpconselor = 99
-                        else:
-                            bhpconselor=int(row[31])
-                        if row[30] == '':
-                            conselor = 99
-                        else:
-                            conselor=int(row[3])
-                        if row[3] == '':
-                            date = '1900-01-01 12:00:00'
-                            datecompleted = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
-                        else:
-                            datecompleted=datetime.strptime(row[3],'%Y-%m-%d %H:%M:%S')
-                        _, created = Psych.objects.update_or_create(
-                                psychid=int(row[0]),
-                                programid=int(row[1]),
-                                clientid=int(row[2]),
-                                datecompleted=datecompleted,
-                                liv=row[4],
-                                soc=row[5],
-                                emp=row[6],
-                                fin=row[7],
-                                chi=row[8],
-                                fam=row[9],
-                                msts=row[10],
-                                con=row[11],
-                                conother=row[12],
-                                goa=row[13],
-                                goaother=row[14],
-                                notes=row[15],
-                                subused=row[16],
-                                subalc=row[17],
-                                subamp=row[18],
-                                subbar=row[19],
-                                subcaf=row[20],
-                                subcoc=row[21],
-                                subcra=row[22],
-                                subhal=row[23],
-                                subinh=row[24],
-                                submar=row[25],
-                                subnic=row[26],
-                                subpcp=row[27],
-                                subpre=row[28],
-                                suboth=row[29],
-                                conselor=conselor,
-                                bhpcounselor=bhpconselor,
-                                locked=locked,
-                                totaltime=int(row[33]),
-                                disabled=int(row[34]),
-                            )
+            csv_file = request.FILES['csv_file']
+            decoded_file = csv_file.read().decode('utf-8')
+            io_string = io.StringIO(decoded_file)
+            for row in csv.reader(io_string, delimiter=',', quotechar='"'):
+                try:
+                    if row[32] == '':
+                        locked = 99
+                    else:
+                        locked=int(row[32])
+                    if row[31] == '':
+                        bhpcounselor = 99
+                    else:
+                        bhpcounselor=int(row[31])
+                    if row[30] == '':
+                        counselor = 99
+                    else:
+                        counselor=int(row[30])
+                    if row[3] == '':
+                        date = '1900-01-01 12:00:00'
+                        datecompleted = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
+                    else:
+                        datecompleted=datetime.strptime(row[3],'%Y-%m-%d %H:%M:%S')
+                    pysch = Psych.objects.get(psychid=int(row[0]))
+                    if psych:
+                        pysch.programid=int(row[1])
+                        pysch.clientid=int(row[2])
+                        pysch.datecompleted=datecompleted
+                        pysch.liv=row[4]
+                        pysch.soc=row[5]
+                        pysch.emp=row[6]
+                        pysch.fin=row[7]
+                        pysch.chi=row[8]
+                        pysch.fam=row[9]
+                        pysch.msts=row[10]
+                        pysch.con=row[11]
+                        psych.conother=row[12]
+                        psych.goa=row[13]
+                        psych.goaother=row[14]
+                        psych.notes=row[15]
+                        psych.subused=row[16]
+                        psych.subalc=row[17]
+                        psych.subamp=row[18]
+                        psych.subbar=row[19]
+                        psych.subcaf=row[20]
+                        psych.subcoc=row[21]
+                        psych.subcra=row[22]
+                        psych.subhal=row[23]
+                        psych.subinh=row[24]
+                        psych.submar=row[25]
+                        psych.subnic=row[26]
+                        psych.subpcp=row[27]
+                        psych.subpre=row[28]
+                        psych.suboth=row[29]
+                        psych.counselor=counselor
+                        psych.bhpcounselor=bhpcounselor
+                        psych.locked=locked
+                        psych.totaltime=int(row[33])
+                        psych.disabled=int(row[34])
+                        pysch.save()
+                except ObjectDoesNotExist:
+                    if row[32] == '':
+                        locked = 99
+                    else:
+                        locked=int(row[32])
+                    if row[31] == '':
+                        bhpcounselor = 99
+                    else:
+                        bhpcounselor=int(row[31])
+                    if row[30] == '':
+                        counselor = 99
+                    else:
+                        counselor=int(row[30])
+                    if row[3] == '':
+                        date = '1900-01-01 12:00:00'
+                        datecompleted = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
+                    else:
+                        datecompleted=datetime.strptime(row[3],'%Y-%m-%d %H:%M:%S')
+                    _, created = Psych.objects.update_or_create(
+                            psychid=int(row[0]),
+                            programid=int(row[1]),
+                            clientid=int(row[2]),
+                            datecompleted=datecompleted,
+                            liv=row[4],
+                            soc=row[5],
+                            emp=row[6],
+                            fin=row[7],
+                            chi=row[8],
+                            fam=row[9],
+                            msts=row[10],
+                            con=row[11],
+                            conother=row[12],
+                            goa=row[13],
+                            goaother=row[14],
+                            notes=row[15],
+                            subused=row[16],
+                            subalc=row[17],
+                            subamp=row[18],
+                            subbar=row[19],
+                            subcaf=row[20],
+                            subcoc=row[21],
+                            subcra=row[22],
+                            subhal=row[23],
+                            subinh=row[24],
+                            submar=row[25],
+                            subnic=row[26],
+                            subpcp=row[27],
+                            subpre=row[28],
+                            suboth=row[29],
+                            counselor=counselor,
+                            bhpcounselor=bhpcounselor,
+                            locked=locked,
+                            totaltime=int(row[33]),
+                            disabled=int(row[34]),
+                        )
         else:
             context ={
                 'form': pathForm
@@ -560,7 +553,7 @@ def upload_psych(request):
                 'form': forms.PathForm()
             }
 
-    return render(request, 'csv.html', context)
+    return render(request, 'upload_psych.html', context)
 
 
 @login_required
@@ -572,34 +565,31 @@ def upload_abuse(request):
     if request.method == 'POST':
         pathForm = forms.PathForm(request.POST)
         if pathForm.is_valid():
-            path = pathForm.cleaned_data.get('path')
-            try:
-                with open(path, encoding="utf-8") as f:
-                        reader = csv.reader(f)
-                        for row in reader:
-                            if row[3] == '':
-                                date = '1900-01-01 12:00:00'
-                                lastsave = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
-                            else:
-                                lastsave=datetime.strptime(row[3],'%Y-%m-%d %H:%M:%S')
+            csv_file = request.FILES['csv_file']
+            decoded_file = csv_file.read().decode('utf-8')
+            io_string = io.StringIO(decoded_file)
+            for row in csv.reader(io_string, delimiter=',', quotechar='"'):
+                try:
+                    if row[3] == '':
+                        date = '1900-01-01 12:00:00'
+                        lastsave = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
+                    else:
+                        lastsave=datetime.strptime(row[3],'%Y-%m-%d %H:%M:%S')
 
-                            if row[4] == '':
-                                date = '1900-01-01 12:00:00'
-                                abusedate = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
-                            else:
-                                abusedate =datetime.strptime(row[4],'%Y-%m-%d %H:%M:%S')
-                            abuse = Abuses.objects.get(abuseid=int(row[0]))
-                            if abuse:
-                                abuse.clientid=int(row[1])
-                                abuse.programid=int(row[2])
-                                abuse.lastsave=lastsave
-                                abuse.abusedate=abusedate
-                                abuse.abusesumm=row[5]
-                                abuse.save()
-            except ObjectDoesNotExist:
-                with open(path, encoding="utf-8") as f:
-                    reader = csv.reader(f)
-                    for row in reader:
+                    if row[4] == '':
+                        date = '1900-01-01 12:00:00'
+                        abusedate = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
+                    else:
+                        abusedate =datetime.strptime(row[4],'%Y-%m-%d %H:%M:%S')
+                    abuse = Abuses.objects.get(abuseid=int(row[0]))
+                    if abuse:
+                        abuse.clientid=int(row[1])
+                        abuse.programid=int(row[2])
+                        abuse.lastsave=lastsave
+                        abuse.abusedate=abusedate
+                        abuse.abusesumm=row[5]
+                        abuse.save()
+                except ObjectDoesNotExist:
                         if row[3] == '':
                             date = '1900-01-01 12:00:00'
                             lastsave = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
@@ -628,7 +618,7 @@ def upload_abuse(request):
                 'form': forms.PathForm()
             }
 
-    return render(request, 'csv.html', context)
+    return render(request, 'upload_abuse.html', context)
 
 
 
@@ -639,229 +629,225 @@ def upload_program(request):
     
     context = {}
     if request.method == 'POST':
-        pathForm = forms.PathForm(request.POST)
+        pathForm = forms.PathForm(request.POST, request.FILES)
         if pathForm.is_valid():
-            path = pathForm.cleaned_data.get('path')
-            try:
-                with open(path, encoding="utf-8") as f:
-                        reader = csv.reader(f)
-                        for row in reader:
-                            if row[4] == '':
-                                date = '1900-01-01'
-                                enddate = datetime.strptime(date,'%Y-%m-%d')
-                            else:
-                                enddate=datetime.strptime(row[4],'%Y-%m-%d')
+            csv_file = request.FILES['csv_file']
+            decoded_file = csv_file.read().decode('utf-8')
+            io_string = io.StringIO(decoded_file)
+            for row in csv.reader(io_string, delimiter=',', quotechar='"'):
+                try:
+                    if row[4] == '':
+                        date = '1900-01-01'
+                        enddate = datetime.strptime(date,'%Y-%m-%d')
+                    else:
+                        enddate=datetime.strptime(row[4],'%Y-%m-%d')
 
-                            if row[5] == '':
-                                date = '1900-01-01'
-                                actualenddate = datetime.strptime(date,'%Y-%m-%d')
-                            else:
-                                actualenddate =datetime.strptime(row[5],'%Y-%m-%d')
-                            
-                            if row[6] == '':
-                                units = 0
-                            else:
-                                units =int(row[6])
-                            
-                            if row[8] == '':
-                                provider = 0
-                            else:
-                                provider =int(row[8])
+                    if row[5] == '':
+                        date = '1900-01-01'
+                        actualenddate = datetime.strptime(date,'%Y-%m-%d')
+                    else:
+                        actualenddate =datetime.strptime(row[5],'%Y-%m-%d')
+                    
+                    if row[6] == '':
+                        units = 0
+                    else:
+                        units =int(row[6])
+                    
+                    if row[8] == '':
+                        provider = 0
+                    else:
+                        provider =int(row[8])
 
-                            if row[10] == '':
-                                treatmentprovider = 0
-                            else:
-                                treatmentprovider=int(row[10])
+                    if row[10] == '':
+                        treatmentprovider = 0
+                    else:
+                        treatmentprovider=int(row[10])
 
-                            if row[11] == '':
-                                date = '1900-01-01 12:00:00'
-                                treatmentselected = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
-                            else:
-                                treatmentselected =datetime.strptime(row[11],'%Y-%m-%d %H:%M:%S')
-                            
-                            if row[12] == '' or row[12] == '0000-00-00':
-                                date = '1900-01-01'
-                                completeby = datetime.strptime(date,'%Y-%m-%d')
-                            else:
-                                completeby =datetime.strptime(row[12],'%Y-%m-%d')
+                    if row[11] == '':
+                        date = '1900-01-01 12:00:00'
+                        treatmentselected = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
+                    else:
+                        treatmentselected =datetime.strptime(row[11],'%Y-%m-%d %H:%M:%S')
+                    
+                    if row[12] == '' or row[12] == '0000-00-00':
+                        date = '1900-01-01'
+                        completeby = datetime.strptime(date,'%Y-%m-%d')
+                    else:
+                        completeby =datetime.strptime(row[12],'%Y-%m-%d')
 
-                            if row[13] == '' or row[13] == '0000-00-00':
-                                date = '1900-01-01'
-                                courtappearancedate = datetime.strptime(date,'%Y-%m-%d')
-                            else:
-                                courtappearancedate =datetime.strptime(row[13],'%Y-%m-%d')
+                    if row[13] == '' or row[13] == '0000-00-00':
+                        date = '1900-01-01'
+                        courtappearancedate = datetime.strptime(date,'%Y-%m-%d')
+                    else:
+                        courtappearancedate =datetime.strptime(row[13],'%Y-%m-%d')
 
-                            if row[14] == '':
-                                date = '1900-01-01'
-                                noncompliance = datetime.strptime(date,'%Y-%m-%d')
-                            else:
-                                noncompliance =datetime.strptime(row[14],'%Y-%m-%d')
+                    if row[14] == '':
+                        date = '1900-01-01'
+                        noncompliance = datetime.strptime(date,'%Y-%m-%d')
+                    else:
+                        noncompliance =datetime.strptime(row[14],'%Y-%m-%d')
 
-                            if row[19] == '':
-                                date = '1900-01-01'
-                                dateofvio = datetime.strptime(date,'%Y-%m-%d')
-                            else:
-                                dateofvio =datetime.strptime(row[19],'%Y-%m-%d')
-                            try:
-                                if row[25] == '':
-                                    totaltime = 0
-                                else:
-                                    totaltime=int(row[25])
-                            except ValueError:
-                                totaltime = 0
-
-                            if row[28] == '':
-                                overridehours = 0
-                            else:
-                                overridehours=int(row[28])
-
-                            try:
-                                client = Clients.objects.get(userid=int(row[1]))
-                            except ObjectDoesNotExist:
-                                client = Clients.objects.get(userid=772)
-
-
-                            program = Programs.objects.get(programid=int(row[0]))
-                            if program:
-                                program.userid=client
-                                program.programtype=int(row[2])
-                                program.startdate=datetime.strptime(row[3],'%Y-%m-%d')
-                                program.enddate=enddate
-                                program.actualenddate=actualenddate
-                                program.units=units
-                                program.unitcount=int(row[7])
-                                program.provider=provider
-                                program.providername=row[9]
-                                program.treatmentprovider=treatmentprovider
-                                program.treatmentselected=treatmentselected
-                                program.completeby=completeby
-                                program.courtappearancedate=courtappearancedate
-                                program.noncompliance=noncompliance
-                                program.noncompliancereason=row[15]
-                                program.created=datetime.strptime(row[16],'%Y-%m-%d %H:%M:%S')
-                                program.disabled=int(row[17])
-                                program.timeofvio=row[18]
-                                program.dateofvio=dateofvio
-                                program.bac=row[20]
-                                program.othercharge=row[21]
-                                program.charge=row[22]
-                                program.casenumber=row[23]
-                                program.docketnumber=row[24]
-                                program.totaltime=totaltime
-                                program.clientdeclinedcourt=int(row[26])
-                                program.comments=row[27]
-                                program.overridehours=overridehours
-                                program.save()
-
-            except ObjectDoesNotExist:
-                with open(path, encoding="utf-8") as f:
-                    reader = csv.reader(f)
-                    for row in reader:
-
-                        if row[4] == '':
-                            date = '1900-01-01'
-                            enddate = datetime.strptime(date,'%Y-%m-%d')
-                        else:
-                            enddate=datetime.strptime(row[4],'%Y-%m-%d')
-
-                        if row[5] == '':
-                            date = '1900-01-01'
-                            actualenddate = datetime.strptime(date,'%Y-%m-%d')
-                        else:
-                            actualenddate =datetime.strptime(row[5],'%Y-%m-%d')
-                        
-                        if row[6] == '':
-                            units = 0
-                        else:
-                            units =int(row[6])
-                        
-                        if row[8] == '':
-                            provider = 0
-                        else:
-                            provider =int(row[8])
-
-                        if row[10] == '':
-                            treatmentprovider = 0
-                        else:
-                            treatmentprovider=int(row[10])
-
-                        if row[11] == '':
-                            date = '1900-01-01 12:00:00'
-                            treatmentselected = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
-                        else:
-                            treatmentselected =datetime.strptime(row[11],'%Y-%m-%d %H:%M:%S')
-
-                        if row[12] == '' or row[12] == '0000-00-00':
-                            date = '1900-01-01'
-                            completeby = datetime.strptime(date,'%Y-%m-%d')
-                        else:
-                            completeby =datetime.strptime(row[12],'%Y-%m-%d')
-
-                        if row[13] == '' or row[13] == '0000-00-00':
-                            date = '1900-01-01'
-                            courtappearancedate = datetime.strptime(date,'%Y-%m-%d')
-                        else:
-                            courtappearancedate =datetime.strptime(row[13],'%Y-%m-%d')
-
-                        if row[14] == '':
-                            date = '1900-01-01'
-                            noncompliance = datetime.strptime(date,'%Y-%m-%d')
-                        else:
-                            noncompliance =datetime.strptime(row[14],'%Y-%m-%d')
-
-                        if row[19] == '':
-                            date = '1900-01-01'
-                            dateofvio = datetime.strptime(date,'%Y-%m-%d')
-                        else:
-                            dateofvio =datetime.strptime(row[19],'%Y-%m-%d')
-                        
-                        try:
-                            if row[25] == '':
-                                totaltime = 0
-                            else:
-                                totaltime=int(row[25])
-                        except ValueError:
+                    if row[19] == '':
+                        date = '1900-01-01'
+                        dateofvio = datetime.strptime(date,'%Y-%m-%d')
+                    else:
+                        dateofvio =datetime.strptime(row[19],'%Y-%m-%d')
+                    try:
+                        if row[25] == '':
                             totaltime = 0
-
-                        if row[28] == '':
-                            overridehours = 0
                         else:
-                            overridehours=int(row[28])
-                        try:
-                            client = Clients.objects.get(userid=int(row[1]))
-                        except ObjectDoesNotExist:
-                            client = Clients.objects.get(userid=772)
-                        _, created = Programs.objects.update_or_create(
-                                programid=int(row[0]),
-                                userid=client,
-                                programtype=int(row[2]),
-                                startdate=datetime.strptime(row[3],'%Y-%m-%d'),
-                                enddate=enddate,
-                                actualenddate=actualenddate,
-                                units=units,
-                                unitcount=int(row[7]),
-                                provider=provider,
-                                providername=row[9],
-                                treatmentprovider=treatmentprovider,
-                                treatmentselected=treatmentselected,
-                                completeby=completeby,
-                                courtappearancedate=courtappearancedate,
-                                noncompliance=noncompliance,
-                                noncompliancereason=row[15],
-                                created=datetime.strptime(row[16],'%Y-%m-%d %H:%M:%S'),
-                                disabled=int(row[17]),
-                                timeofvio=row[18],
-                                dateofvio=dateofvio,
-                                bac=row[20],
-                                othercharge=row[21],
-                                charge=row[22],
-                                casenumber=row[23],
-                                docketnumber=row[24],
-                                totaltime=totaltime,
-                                clientdeclinedcourt=int(row[26]),
-                                comments=row[27],
-                                overridehours=overridehours
-                            )
+                            totaltime=int(row[25])
+                    except ValueError:
+                        totaltime = 0
+
+                    if row[28] == '':
+                        overridehours = 0
+                    else:
+                        overridehours=int(row[28])
+
+                    try:
+                        client = Clients.objects.get(userid=int(row[1]))
+                    except ObjectDoesNotExist:
+                        client = Clients.objects.get(userid=772)
+
+
+                    program = Programs.objects.get(programid=int(row[0]))
+                    if program:
+                        program.userid=client
+                        program.programtype=int(row[2])
+                        program.startdate=datetime.strptime(row[3],'%Y-%m-%d')
+                        program.enddate=enddate
+                        program.actualenddate=actualenddate
+                        program.units=units
+                        program.unitcount=int(row[7])
+                        program.provider=provider
+                        program.providername=row[9]
+                        program.treatmentprovider=treatmentprovider
+                        program.treatmentselected=treatmentselected
+                        program.completeby=completeby
+                        program.courtappearancedate=courtappearancedate
+                        program.noncompliance=noncompliance
+                        program.noncompliancereason=row[15]
+                        program.created=datetime.strptime(row[16],'%Y-%m-%d %H:%M:%S')
+                        program.disabled=int(row[17])
+                        program.timeofvio=row[18]
+                        program.dateofvio=dateofvio
+                        program.bac=row[20]
+                        program.othercharge=row[21]
+                        program.charge=row[22]
+                        program.casenumber=row[23]
+                        program.docketnumber=row[24]
+                        program.totaltime=totaltime
+                        program.clientdeclinedcourt=int(row[26])
+                        program.comments=row[27]
+                        program.overridehours=overridehours
+                        program.save()
+
+                except ObjectDoesNotExist:
+                    if row[4] == '':
+                        date = '1900-01-01'
+                        enddate = datetime.strptime(date,'%Y-%m-%d')
+                    else:
+                        enddate=datetime.strptime(row[4],'%Y-%m-%d')
+
+                    if row[5] == '':
+                        date = '1900-01-01'
+                        actualenddate = datetime.strptime(date,'%Y-%m-%d')
+                    else:
+                        actualenddate =datetime.strptime(row[5],'%Y-%m-%d')
+                    
+                    if row[6] == '':
+                        units = 0
+                    else:
+                        units =int(row[6])
+                    
+                    if row[8] == '':
+                        provider = 0
+                    else:
+                        provider =int(row[8])
+
+                    if row[10] == '':
+                        treatmentprovider = 0
+                    else:
+                        treatmentprovider=int(row[10])
+
+                    if row[11] == '':
+                        date = '1900-01-01 12:00:00'
+                        treatmentselected = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
+                    else:
+                        treatmentselected =datetime.strptime(row[11],'%Y-%m-%d %H:%M:%S')
+
+                    if row[12] == '' or row[12] == '0000-00-00':
+                        date = '1900-01-01'
+                        completeby = datetime.strptime(date,'%Y-%m-%d')
+                    else:
+                        completeby =datetime.strptime(row[12],'%Y-%m-%d')
+
+                    if row[13] == '' or row[13] == '0000-00-00':
+                        date = '1900-01-01'
+                        courtappearancedate = datetime.strptime(date,'%Y-%m-%d')
+                    else:
+                        courtappearancedate =datetime.strptime(row[13],'%Y-%m-%d')
+
+                    if row[14] == '':
+                        date = '1900-01-01'
+                        noncompliance = datetime.strptime(date,'%Y-%m-%d')
+                    else:
+                        noncompliance =datetime.strptime(row[14],'%Y-%m-%d')
+
+                    if row[19] == '':
+                        date = '1900-01-01'
+                        dateofvio = datetime.strptime(date,'%Y-%m-%d')
+                    else:
+                        dateofvio =datetime.strptime(row[19],'%Y-%m-%d')
+                    
+                    try:
+                        if row[25] == '':
+                            totaltime = 0
+                        else:
+                            totaltime=int(row[25])
+                    except ValueError:
+                        totaltime = 0
+
+                    if row[28] == '':
+                        overridehours = 0
+                    else:
+                        overridehours=int(row[28])
+                    try:
+                        client = Clients.objects.get(userid=int(row[1]))
+                    except ObjectDoesNotExist:
+                        client = Clients.objects.get(userid=772)
+                    _, created = Programs.objects.update_or_create(
+                            programid=int(row[0]),
+                            userid=client,
+                            programtype=int(row[2]),
+                            startdate=datetime.strptime(row[3],'%Y-%m-%d'),
+                            enddate=enddate,
+                            actualenddate=actualenddate,
+                            units=units,
+                            unitcount=int(row[7]),
+                            provider=provider,
+                            providername=row[9],
+                            treatmentprovider=treatmentprovider,
+                            treatmentselected=treatmentselected,
+                            completeby=completeby,
+                            courtappearancedate=courtappearancedate,
+                            noncompliance=noncompliance,
+                            noncompliancereason=row[15],
+                            created=datetime.strptime(row[16],'%Y-%m-%d %H:%M:%S'),
+                            disabled=int(row[17]),
+                            timeofvio=row[18],
+                            dateofvio=dateofvio,
+                            bac=row[20],
+                            othercharge=row[21],
+                            charge=row[22],
+                            casenumber=row[23],
+                            docketnumber=row[24],
+                            totaltime=totaltime,
+                            clientdeclinedcourt=int(row[26]),
+                            comments=row[27],
+                            overridehours=overridehours
+                                )
         else:
             context ={
                 'form': pathForm
@@ -871,4 +857,4 @@ def upload_program(request):
                 'form': forms.PathForm()
             }
 
-    return render(request, 'csv.html', context)
+    return render(request, 'upload_program.html', context)
