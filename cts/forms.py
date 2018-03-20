@@ -7,3 +7,6 @@ from django import forms
 class CourtCaseForm(forms.Form):
     firstname = forms.CharField(required=False)
     lastname = forms.CharField(required=False)
+
+class PathForm(forms.Form):
+    path = forms.CharField(required=False)

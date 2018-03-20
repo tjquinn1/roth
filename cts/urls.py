@@ -9,4 +9,10 @@ urlpatterns = [
     url(r"^abuse/(?P<client_id>\d+)/(?P<program_id>\d+)/$", views.abuse, name="abuse"),
     url(r"^psych/(?P<program_id>\d+)/$", views.psych, name="psych"),
     url(r"^mast/(?P<program_id>\d+)/$", views.mast, name="mast"),
+    url(r"^upload_client/$", views.upload_client, name="upload_client"),
+    url(r"^upload_mast/$", views.upload_mast, name="upload_mast"),
+    url(r"^upload_fin/$", views.upload_fin, name="upload_fin"),
+    url(r"^upload_psych/$", views.upload_psych, name="upload_psych"),
+    url(r"^upload_abuse/$", views.upload_abuse, name="upload_abuse"),
+    url(r"^upload_program/$", views.upload_program, name="upload_program"),
 ]

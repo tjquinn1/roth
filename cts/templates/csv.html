@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% load cts_extras %}
+{% block content %}
+
+    <div>
+
+        <form action="." method="POST">
+        {{ form }}
+        {% csrf_token %}
+        <input type="submit" value="Submit" />
+        </form>
+    </div>
+{% endblock %}
