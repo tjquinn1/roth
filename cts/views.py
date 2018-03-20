@@ -6,6 +6,7 @@ from .models import Abusebehav as Abuses
 from .models import Mastscore as Masts
 from decimal import Decimal
 import csv
+import io
 from datetime import datetime
 
 from collections import namedtuple
@@ -100,50 +101,48 @@ def upload_mast(request):
     
     context = {}
     if request.method == 'POST':
-        pathForm = forms.PathForm(request.POST)
+        pathForm = forms.PathForm(request.POST, request.FILES)
         if pathForm.is_valid():
-            path = pathForm.cleaned_data.get('path')
-            try:
-                with open(path, encoding="utf-8") as f:
-                        reader = csv.reader(f)
-                        for row in reader:
-                            if row[6] == '':
-                                ans22times=0
-                            else:
-                                ans22times=int(row[6])
-                            mast = Masts.objects.get(mastid=int(row[0]))
-                            if mast:
-                                mast.clientid=int(row[1])
-                                mast.programid=int(row[2])
-                                mast.mastdate=datetime.strptime(row[3],'%Y/%m/%d %H:%M:%S')
-                                mast.answers=row[4]
-                                mast.ans21times=int(row[5])
-                                mast.ans22times=ans22times
-                                mast.mastscore=int(row[7])
-                                mast.maststat=int(row[8])
-                                mast.totaltime=int(row[9])
-                                mast.save()
-            except ObjectDoesNotExist:
-                with open(path, encoding="utf-8") as f:
-                    reader = csv.reader(f)
-                    for row in reader:
-                        if row[6] == '':
-                            ans22times=0
-                        else:
-                            ans22times=int(row[6])
+            csv_file = request.FILES['csv_file']
+            decoded_file = csv_file.read().decode('utf-8')
+            io_string = io.StringIO(decoded_file)
+            for row in csv.reader(io_string, delimiter=',', quotechar='"'):
+                try:
+                    mast = Masts.objects.get(mastid=int(row[0]))
+                    if row[6] == '':
+                        ans22times=0
+                    else:
+                        ans22times=int(row[6])
+                    if mast:
+                        mast.clientid=int(row[1])
+                        mast.programid=int(row[2])
+                        mast.mastdate=datetime.strptime(row[3],'%Y/%m/%d %H:%M:%S')
+                        mast.answers=row[4]
+                        mast.ans21times=int(row[5])
+                        mast.ans22times=ans22times
+                        mast.mastscore=int(row[7])
+                        mast.maststat=int(row[8])
+                        mast.totaltime=int(row[9])
+                        mast.save()
+                        print("Prints")
+                except ObjectDoesNotExist:
+                    if row[6] == '':
+                        ans22times=0
+                    else:
+                        ans22times=int(row[6])
+                    _, created = Masts.objects.update_or_create(
+                        mastid=int(row[0]),
+                        clientid=int(row[1]),
+                        programid=int(row[2]),
+                        mastdate=datetime.strptime(row[3],'%Y/%m/%d %H:%M:%S'),
+                        answers=row[4],
+                        ans21times=int(row[5]),
+                        ans22times=ans22times,
+                        mastscore=int(row[7]),
+                        maststat=int(row[8]),
+                        totaltime=int(row[9]),
+                        )
 
-                        _, created = Masts.objects.update_or_create(
-                            mastid=int(row[0]),
-                            clientid=int(row[1]),
-                            programid=int(row[2]),
-                            mastdate=datetime.strptime(row[3],'%Y/%m/%d %H:%M:%S'),
-                            answers=row[4],
-                            ans21times=int(row[5]),
-                            ans22times=ans22times,
-                            mastscore=int(row[7]),
-                            maststat=int(row[8]),
-                            totaltime=int(row[9]),
-                            )
         else:
             context ={
                 'form': pathForm
@@ -153,7 +152,7 @@ def upload_mast(request):
                 'form': forms.PathForm()
             }
 
-    return render(request, 'csv.html', context)
+    return render(request, 'upload_mast.html', context)
 
 @login_required
 def upload_client(request):
@@ -162,202 +161,199 @@ def upload_client(request):
     
     context = {}
     if request.method == 'POST':
-        pathForm = forms.PathForm(request.POST)
+        pathForm = forms.PathForm(request.POST, request.FILES)
         if pathForm.is_valid():
-            path = pathForm.cleaned_data.get('path')
-            try:
-                with open(path, encoding="utf-8") as f:
-                        reader = csv.reader(f)
-                        for row in reader:
-                            if row[20] == '':
-                                origin=0
-                            else:
-                                origin=int(row[20])
+            csv_file = request.FILES['csv_file']
+            decoded_file = csv_file.read().decode('utf-8')
+            io_string = io.StringIO(decoded_file)
+            for row in csv.reader(io_string, delimiter=',', quotechar='"'):
+                try:
+                    if row[20] == '':
+                        origin=0
+                    else:
+                        origin=int(row[20])
 
-                            if row[22] == '':
-                                educationyears=0
-                            else:
-                                educationyears=int(row[22])
+                    if row[22] == '':
+                        educationyears=0
+                    else:
+                        educationyears=int(row[22])
 
-                            if row[25] == '':
-                                income=0.0
-                            else:
-                                income=float(row[25])
-                            client = Clients.objects.get(userid=int(row[0]))
-                            if client:
-                                client.firstname=row[1]
-                                client.middlename=row[2]
-                                client.lastname=row[3]
-                                client.suffix=row[4]
-                                client.namesoundex=row[5]
-                                client.password=row[6]
-                                client.emailaddress=row[7]
-                                client.address=row[8]
-                                client.address2=row[9]
-                                client.city=row[10]
-                                client.state=row[11]
-                                client.zip=row[12]
-                                client.homephone=row[13]
-                                client.workphone=row[14]
-                                client.ssn=row[15]
-                                client.dob= datetime.strptime(row[16], '%Y-%m-%d')
-                                client.gender=row[17]
-                                client.indigent=row[18]
-                                client.interpreter=row[19]
-                                client.origin=origin
-                                client.mstatus=int(row[21])
-                                client.educationyears=educationyears
-                                client.occupation=row[23]
-                                client.empstatus=row[24]
-                                client.income=income
-                                client.highschoolgrad=row[26]
-                                client.collegegrad=row[27]
-                                client.familysize=int(row[28])
-                                client.dlnumber=row[29]
-                                client.dlstate=row[30]
-                                client.idnumber=row[31]
-                                client.idstate=row[32]
-                                client.passport=row[33]
-                                client.passportorigin=row[34]
-                                client.aclu1=int(row[35])
-                                client.aclu2=int(row[36])
-                                client.aclu3=int(row[37])
-                                client.aclu4=int(row[38])
-                                client.aclu5=int(row[39])
-                                client.aclu6=int(row[40])
-                                client.aclu7=int(row[41])
-                                client.aclu8=int(row[42])
-                                client.aclu9=int(row[43])
-                                client.aclu10=int(row[44])
-                                client.aclu11=int(row[45])
-                                client.aclu12=int(row[46])
-                                client.aclu13=int(row[47])
-                                client.aclu14=int(row[48])
-                                client.aclu15=int(row[49])
-                                client.aclu16=int(row[50])
-                                client.aclu17=int(row[51])
-                                client.aclu18=int(row[52])
-                                client.aclu19=int(row[53])
-                                client.aclu20=int(row[54])
-                                client.aclu21=int(row[55])
-                                client.aclu22=int(row[56])
-                                client.aclu23=int(row[57])
-                                client.aclu24=int(row[58])
-                                client.aclu25=int(row[59])
-                                client.aclu26=int(row[60])
-                                client.aclu27=int(row[61])
-                                client.aclu28=int(row[62])
-                                client.aclu29=int(row[63])
-                                client.aclu30=int(row[64])
-                                client.disabled=int(row[65])
-                                client.created=datetime.strptime(row[66],'%Y/%m/%d %H:%M:%S')
-                                client.company=int(row[67])
-                                client.emercontact=row[68]
-                                client.emercontactrel=row[69]
-                                client.emercontactphone=row[70]
-                                client.emercontactemail=row[71]
-                                client.truthfulness=int(row[72])
-                                client.truthdate=datetime.strptime(row[73],'%Y/%m/%d %H:%M:%S')
-                                client.ipaddress=row[74]
-                                client.lastlog=datetime.strptime(row[75],'%Y/%m/%d %H:%M:%S')
-                                client.totaltime=int(row[76])
-                                client.save()
-            except ObjectDoesNotExist:
-                with open(path, encoding="utf-8") as f:
-                    reader = csv.reader(f)
-                    for row in reader:
-                        if row[20] == '':
-                            origin=0
-                        else:
-                            origin=int(row[20])
-                        if row[22] == '':
-                            educationyears=0
-                        else:
-                            educationyears=int(row[22])
+                    if row[25] == '':
+                        income=0.0
+                    else:
+                        income=float(row[25])
+                    client = Clients.objects.get(userid=int(row[0]))
+                    if client:
+                        client.firstname=row[1]
+                        client.middlename=row[2]
+                        client.lastname=row[3]
+                        client.suffix=row[4]
+                        client.namesoundex=row[5]
+                        client.password=row[6]
+                        client.emailaddress=row[7]
+                        client.address=row[8]
+                        client.address2=row[9]
+                        client.city=row[10]
+                        client.state=row[11]
+                        client.zip=row[12]
+                        client.homephone=row[13]
+                        client.workphone=row[14]
+                        client.ssn=row[15]
+                        client.dob= datetime.strptime(row[16], '%Y-%m-%d')
+                        client.gender=row[17]
+                        client.indigent=row[18]
+                        client.interpreter=row[19]
+                        client.origin=origin
+                        client.mstatus=int(row[21])
+                        client.educationyears=educationyears
+                        client.occupation=row[23]
+                        client.empstatus=row[24]
+                        client.income=income
+                        client.highschoolgrad=row[26]
+                        client.collegegrad=row[27]
+                        client.familysize=int(row[28])
+                        client.dlnumber=row[29]
+                        client.dlstate=row[30]
+                        client.idnumber=row[31]
+                        client.idstate=row[32]
+                        client.passport=row[33]
+                        client.passportorigin=row[34]
+                        client.aclu1=int(row[35])
+                        client.aclu2=int(row[36])
+                        client.aclu3=int(row[37])
+                        client.aclu4=int(row[38])
+                        client.aclu5=int(row[39])
+                        client.aclu6=int(row[40])
+                        client.aclu7=int(row[41])
+                        client.aclu8=int(row[42])
+                        client.aclu9=int(row[43])
+                        client.aclu10=int(row[44])
+                        client.aclu11=int(row[45])
+                        client.aclu12=int(row[46])
+                        client.aclu13=int(row[47])
+                        client.aclu14=int(row[48])
+                        client.aclu15=int(row[49])
+                        client.aclu16=int(row[50])
+                        client.aclu17=int(row[51])
+                        client.aclu18=int(row[52])
+                        client.aclu19=int(row[53])
+                        client.aclu20=int(row[54])
+                        client.aclu21=int(row[55])
+                        client.aclu22=int(row[56])
+                        client.aclu23=int(row[57])
+                        client.aclu24=int(row[58])
+                        client.aclu25=int(row[59])
+                        client.aclu26=int(row[60])
+                        client.aclu27=int(row[61])
+                        client.aclu28=int(row[62])
+                        client.aclu29=int(row[63])
+                        client.aclu30=int(row[64])
+                        client.disabled=int(row[65])
+                        client.created=datetime.strptime(row[66],'%Y/%m/%d %H:%M:%S')
+                        client.company=int(row[67])
+                        client.emercontact=row[68]
+                        client.emercontactrel=row[69]
+                        client.emercontactphone=row[70]
+                        client.emercontactemail=row[71]
+                        client.truthfulness=int(row[72])
+                        client.truthdate=datetime.strptime(row[73],'%Y/%m/%d %H:%M:%S')
+                        client.ipaddress=row[74]
+                        client.lastlog=datetime.strptime(row[75],'%Y/%m/%d %H:%M:%S')
+                        client.totaltime=int(row[76])
+                        client.save()
+                except ObjectDoesNotExist:
+                    if row[20] == '':
+                        origin=0
+                    else:
+                        origin=int(row[20])
+                    if row[22] == '':
+                        educationyears=0
+                    else:
+                        educationyears=int(row[22])
 
-                        if row[25] == '':
-                            income=0.0
-                        else:
-                            income=float(row[25])
-                        _, created = Clients.objects.update_or_create(
-                            userid=int(row[0]),
-                            firstname=row[1],
-                            middlename=row[2],
-                            lastname=row[3],
-                            suffix=row[4],
-                            namesoundex=row[5],
-                            password=row[6],
-                            emailaddress=row[7],
-                            address=row[8],
-                            address2=row[9],
-                            city=row[10],
-                            state=row[11],
-                            zip=row[12],
-                            homephone=row[13],
-                            workphone=row[14],
-                            ssn=row[15],
-                            dob= datetime.strptime(row[16], '%Y-%m-%d'),
-                            gender=row[17],
-                            indigent=row[18],
-                            interpreter=row[19],
-                            origin=origin,
-                            mstatus=int(row[21]),
-                            educationyears=educationyears,
-                            occupation=row[23],
-                            empstatus=row[24],
-                            income=income,
-                            highschoolgrad=row[26],
-                            collegegrad=row[27],
-                            familysize=int(row[28]),
-                            dlnumber=row[29],
-                            dlstate=row[30],
-                            idnumber=row[31],
-                            idstate=row[32],
-                            passport=row[33],
-                            passportorigin=row[34],
-                            aclu1=int(row[35]),
-                            aclu2=int(row[36]),
-                            aclu3=int(row[37]),
-                            aclu4=int(row[38]),
-                            aclu5=int(row[39]),
-                            aclu6=int(row[40]),
-                            aclu7=int(row[41]),
-                            aclu8=int(row[42]),
-                            aclu9=int(row[43]),
-                            aclu10=int(row[44]),
-                            aclu11=int(row[45]),
-                            aclu12=int(row[46]),
-                            aclu13=int(row[47]),
-                            aclu14=int(row[48]),
-                            aclu15=int(row[49]),
-                            aclu16=int(row[50]),
-                            aclu17=int(row[51]),
-                            aclu18=int(row[52]),
-                            aclu19=int(row[53]),
-                            aclu20=int(row[54]),
-                            aclu21=int(row[55]),
-                            aclu22=int(row[56]),
-                            aclu23=int(row[57]),
-                            aclu24=int(row[58]),
-                            aclu25=int(row[59]),
-                            aclu26=int(row[60]),
-                            aclu27=int(row[61]),
-                            aclu28=int(row[62]),
-                            aclu29=int(row[63]),
-                            aclu30=int(row[64]),
-                            disabled=int(row[65]),
-                            created=datetime.strptime(row[66],'%Y/%m/%d %H:%M:%S'),
-                            company=int(row[67]),
-                            emercontact=row[68],
-                            emercontactrel=row[69],
-                            emercontactphone=row[70],
-                            emercontactemail=row[71],
-                            truthfulness=int(row[72]),
-                            truthdate=datetime.strptime(row[73],'%Y/%m/%d %H:%M:%S'),
-                            ipaddress=row[74],
-                            lastlog=datetime.strptime(row[75],'%Y/%m/%d %H:%M:%S'),
-                            totaltime=int(row[76])
-                            )
+                    if row[25] == '':
+                        income=0.0
+                    else:
+                        income=float(row[25])
+                    _, created = Clients.objects.update_or_create(
+                        userid=int(row[0]),
+                        firstname=row[1],
+                        middlename=row[2],
+                        lastname=row[3],
+                        suffix=row[4],
+                        namesoundex=row[5],
+                        password=row[6],
+                        emailaddress=row[7],
+                        address=row[8],
+                        address2=row[9],
+                        city=row[10],
+                        state=row[11],
+                        zip=row[12],
+                        homephone=row[13],
+                        workphone=row[14],
+                        ssn=row[15],
+                        dob= datetime.strptime(row[16], '%Y-%m-%d'),
+                        gender=row[17],
+                        indigent=row[18],
+                        interpreter=row[19],
+                        origin=origin,
+                        mstatus=int(row[21]),
+                        educationyears=educationyears,
+                        occupation=row[23],
+                        empstatus=row[24],
+                        income=income,
+                        highschoolgrad=row[26],
+                        collegegrad=row[27],
+                        familysize=int(row[28]),
+                        dlnumber=row[29],
+                        dlstate=row[30],
+                        idnumber=row[31],
+                        idstate=row[32],
+                        passport=row[33],
+                        passportorigin=row[34],
+                        aclu1=int(row[35]),
+                        aclu2=int(row[36]),
+                        aclu3=int(row[37]),
+                        aclu4=int(row[38]),
+                        aclu5=int(row[39]),
+                        aclu6=int(row[40]),
+                        aclu7=int(row[41]),
+                        aclu8=int(row[42]),
+                        aclu9=int(row[43]),
+                        aclu10=int(row[44]),
+                        aclu11=int(row[45]),
+                        aclu12=int(row[46]),
+                        aclu13=int(row[47]),
+                        aclu14=int(row[48]),
+                        aclu15=int(row[49]),
+                        aclu16=int(row[50]),
+                        aclu17=int(row[51]),
+                        aclu18=int(row[52]),
+                        aclu19=int(row[53]),
+                        aclu20=int(row[54]),
+                        aclu21=int(row[55]),
+                        aclu22=int(row[56]),
+                        aclu23=int(row[57]),
+                        aclu24=int(row[58]),
+                        aclu25=int(row[59]),
+                        aclu26=int(row[60]),
+                        aclu27=int(row[61]),
+                        aclu28=int(row[62]),
+                        aclu29=int(row[63]),
+                        aclu30=int(row[64]),
+                        disabled=int(row[65]),
+                        created=datetime.strptime(row[66],'%Y/%m/%d %H:%M:%S'),
+                        company=int(row[67]),
+                        emercontact=row[68],
+                        emercontactrel=row[69],
+                        emercontactphone=row[70],
+                        emercontactemail=row[71],
+                        truthfulness=int(row[72]),
+                        truthdate=datetime.strptime(row[73],'%Y/%m/%d %H:%M:%S'),
+                        ipaddress=row[74],
+                        lastlog=datetime.strptime(row[75],'%Y/%m/%d %H:%M:%S'),
+                        totaltime=int(row[76])
+                        )
         else:
             context ={
                 'form': pathForm
@@ -367,7 +363,7 @@ def upload_client(request):
                 'form': forms.PathForm()
             }
 
-    return render(request, 'csv.html', context)
+    return render(request, 'upload_client.html', context)
 
 
 @login_required
