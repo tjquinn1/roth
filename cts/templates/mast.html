@@ -6,7 +6,7 @@
         <h2>Standard DUI/Alcohol/Drug Screening Test (MAST) and Results</h2>
     </div>
     <div class="row">
-        <strong>MAST Survey Results for Stuart Reed Gold completed on {{ mast.mastdate|date:"SHORT_DATE_FORMAT" }} at {{ mast.mastdate|time }} in {{ mast.totaltime|sec2Mins }} </strong>
+        <strong>MAST Survey Results for {{ client.firstname }} {{ client.middlename }} {{ client.lastname }} completed on {{ mast.mastdate|date:"SHORT_DATE_FORMAT" }} at {{ mast.mastdate|time }} in {{ mast.totaltime|sec2Mins }} </strong>
     </div>
     <div class="row">
         <strong>MAST Numeric Score = {{ mast.mastscore }}</strong>

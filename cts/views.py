@@ -84,10 +84,12 @@ def psych(request, program_id):
     return render(request, 'psych.html', context)
 
 @login_required
-def mast(request, program_id):
+def mast(request, program_id, client_id):
     context = {}
     mast = Masts.objects.get(programid = program_id)
+    client = Clients.objects.get(userid= client_id)
     context['mast'] = mast
+    context['client'] = client
 
 
     return render(request, 'mast.html', context)

@@ -47,7 +47,7 @@
                                     <a class="dropdown-item" href="{% url 'cts:psych' program_id=program.programid %}">Psychsocial</a>
                                     {% endif %}
                                     {% if  program|programMast %}
-                                    <a class="dropdown-item" href="{% url 'cts:mast' program_id=program.programid %}">MAST</a>
+                                    <a class="dropdown-item" href="{% url 'cts:mast' program_id=program.programid client_id=client.userid %}">MAST</a>
                                     {% endif %}
                                 </div>
 
