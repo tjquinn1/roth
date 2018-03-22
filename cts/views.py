@@ -115,12 +115,16 @@ def upload_mast(request):
                         ans22times=0
                     else:
                         ans22times=int(row[6])
+                    if row[5] == '':
+                        ans21times=0
+                    else:
+                        ans21times=int(row[5])
                     if mast:
                         mast.clientid=int(row[1])
                         mast.programid=int(row[2])
                         mast.mastdate=datetime.strptime(row[3],'%Y/%m/%d %H:%M:%S')
                         mast.answers=row[4]
-                        mast.ans21times=int(row[5])
+                        mast.ans21times=ans21times
                         mast.ans22times=ans22times
                         mast.mastscore=int(row[7])
                         mast.maststat=int(row[8])
