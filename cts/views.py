@@ -295,6 +295,12 @@ def upload_client(request):
                         income=0.0
                     else:
                         income=float(row[25])
+
+                    if row[75] == '':
+                        date = '1900-01-01 12:00:00'
+                        lastlogin = datetime.strptime(date,'%Y/%m/%d %H:%M:%S')
+                    else:
+                        lastlogin=datetime.strptime(row[75],'%Y/%m/%d %H:%M:%S')
                     _, created = Clients.objects.update_or_create(
                         userid=int(row[0]),
                         firstname=row[1],
@@ -371,7 +377,7 @@ def upload_client(request):
                         truthfulness=int(row[72]),
                         truthdate=datetime.strptime(row[73],'%Y/%m/%d %H:%M:%S'),
                         ipaddress=row[74],
-                        lastlog=datetime.strptime(row[75],'%Y/%m/%d %H:%M:%S'),
+                        lastlog=lastlogin,
                         totaltime=int(row[76])
                         )
         else:
