@@ -185,6 +185,11 @@ def upload_client(request):
                     else:
                         origin=int(row[20])
 
+                    if row[21] == '':
+                        mstatus=0
+                    else:
+                        mstatus=int(row[21])
+
                     if row[22] == '':
                         educationyears=0
                     else:
@@ -194,6 +199,23 @@ def upload_client(request):
                         income=0.0
                     else:
                         income=float(row[25])
+
+                    if row[66] == '':
+                        date = '1900/01/01 12:00:00'
+                        created = datetime.strptime(date,'%Y/%m/%d %H:%M:%S')
+                    else:
+                        created = datetime.strptime(row[66],'%Y/%m/%d %H:%M:%S')
+
+                    if row[73] == '':
+                        date = '1900/01/01 12:00:00'
+                        truthdate = datetime.strptime(date,'%Y/%m/%d %H:%M:%S')
+                    else:
+                        truthdate = datetime.strptime(row[73],'%Y/%m/%d %H:%M:%S')
+                    if row[75] == '':
+                        date = '1900/01/01 12:00:00'
+                        lastlogin = datetime.strptime(date,'%Y/%m/%d %H:%M:%S')
+                    else:
+                        lastlogin=datetime.strptime(row[75],'%Y/%m/%d %H:%M:%S')
                     if client:
                         client.firstname=row[1]
                         client.middlename=row[2]
@@ -215,7 +237,7 @@ def upload_client(request):
                         client.indigent=row[18]
                         client.interpreter=row[19]
                         client.origin=origin
-                        client.mstatus=int(row[21])
+                        client.mstatus=mstatus
                         client.educationyears=educationyears
                         client.occupation=row[23]
                         client.empstatus=row[24]
@@ -260,16 +282,16 @@ def upload_client(request):
                         client.aclu29=int(row[63])
                         client.aclu30=int(row[64])
                         client.disabled=int(row[65])
-                        client.created=datetime.strptime(row[66],'%Y/%m/%d %H:%M:%S')
+                        client.created=created
                         client.company=int(row[67])
                         client.emercontact=row[68]
                         client.emercontactrel=row[69]
                         client.emercontactphone=row[70]
                         client.emercontactemail=row[71]
                         client.truthfulness=int(row[72])
-                        client.truthdate=datetime.strptime(row[73],'%Y/%m/%d %H:%M:%S')
+                        client.truthdate=truthdate
                         client.ipaddress=row[74]
-                        client.lastlog=datetime.strptime(row[75],'%Y/%m/%d %H:%M:%S')
+                        client.lastlog=lastlogin
                         client.totaltime=int(row[76])
                         client.save()
                 except ObjectDoesNotExist:
@@ -296,11 +318,23 @@ def upload_client(request):
                     else:
                         income=float(row[25])
 
-                    if row[75] == '':
-                        date = '1900-01-01 12:00:00'
-                        lastlogin = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
+                    if row[66] == '':
+                        date = '1900/01/01 12:00:00'
+                        created = datetime.strptime(date,'%Y/%m/%d %H:%M:%S')
                     else:
-                        lastlogin=datetime.strptime(row[75],'%Y-%m-%d %H:%M:%S')
+                        created = datetime.strptime(row[66],'%Y/%m/%d %H:%M:%S')
+
+                    if row[73] == '':
+                        date = '1900/01/01 12:00:00'
+                        truthdate = datetime.strptime(date,'%Y/%m/%d %H:%M:%S')
+                    else:
+                        truthdate = datetime.strptime(row[73],'%Y/%m/%d %H:%M:%S')
+
+                    if row[75] == '':
+                        date = '1900/01/01 12:00:00'
+                        lastlogin = datetime.strptime(date,'%Y/%m/%d %H:%M:%S')
+                    else:
+                        lastlogin=datetime.strptime(row[75],'%Y/%m/%d %H:%M:%S')
                     _, created = Clients.objects.update_or_create(
                         userid=int(row[0]),
                         firstname=row[1],
@@ -368,14 +402,14 @@ def upload_client(request):
                         aclu29=int(row[63]),
                         aclu30=int(row[64]),
                         disabled=int(row[65]),
-                        created=datetime.strptime(row[66],'%Y/%m/%d %H:%M:%S'),
+                        created=created,
                         company=int(row[67]),
                         emercontact=row[68],
                         emercontactrel=row[69],
                         emercontactphone=row[70],
                         emercontactemail=row[71],
                         truthfulness=int(row[72]),
-                        truthdate=datetime.strptime(row[73],'%Y/%m/%d %H:%M:%S'),
+                        truthdate=truthdate,
                         ipaddress=row[74],
                         lastlog=lastlogin,
                         totaltime=int(row[76])
