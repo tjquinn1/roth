@@ -445,33 +445,73 @@ def upload_fin(request):
             for row in csv.reader(io_string, delimiter=',', quotechar='"'):
                 try:
                     fin = Finances.objects.get(financeid=int(row[0]))
+                    if row[4] == '':
+                        date = '1900-01-01 12:00:00'
+                        dateposted = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
+                    else:
+                        dateposted=datetime.strptime(row[4],'%Y-%m-%d %H:%M:%S')
+                    
+                    if row[5] == '':
+                        date = '1900-01-01 12:00:00'
+                        transactiondate = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
+                    else:
+                        transactiondate=datetime.strptime(row[5],'%Y-%m-%d %H:%M:%S')
+                    if row[10] == '':
+                        modifiedid=0
+                    else:
+                        modifiedid=int(row[10])
+                    if row[11] == '':
+                        date = '1900-01-01 12:00:00'
+                        modificationdate = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
+                    else:
+                        modificationdate = datetime.strptime(row[11],'%Y-%m-%d %H:%M:%S')
                     if fin:
                         fin.clientid=int(row[1])
                         fin.programid=int(row[2])
                         fin.posterid=int(row[3])
-                        fin.dateposted=datetime.strptime(row[4],'%Y/%m/%d %H:%M:%S')
-                        fin.transactiondate=datetime.strptime(row[5],'%Y/%m/%d %H:%M:%S')
+                        fin.dateposted=dateposted
+                        fin.transactiondate=transactiondate
                         fin.transactiontype=int(row[6])
                         fin.description=row[7]
                         fin.amount=Decimal(row[8])
                         fin.office=int(row[9])
-                        fin.modifiedid=int(row[10])
-                        fin.modificationdate=datetime.strptime(row[11],'%Y/%m/%d %H:%M:%S')
+                        fin.modifiedid=modifiedid
+                        fin.modificationdate=modificationdate
                         fin.save()
                 except ObjectDoesNotExist:
+                    if row[4] == '':
+                        date = '1900-01-01 12:00:00'
+                        dateposted = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
+                    else:
+                        dateposted=datetime.strptime(row[4],'%Y-%m-%d %H:%M:%S')
+
+                    if row[5] == '':
+                        date = '1900-01-01 12:00:00'
+                        transactiondate = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
+                    else:
+                        transactiondate=datetime.strptime(row[5],'%Y-%m-%d %H:%M:%S')
+                    if row[10] == '':
+                        modifiedid=0
+                    else:
+                        modifiedid=int(row[10])
+                    if row[11] == '':
+                        date = '1900-01-01 12:00:00'
+                        modificationdate = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
+                    else:
+                        modificationdate = datetime.strptime(row[11],'%Y-%m-%d %H:%M:%S')
                     _, created = Finances.objects.update_or_create(
                             financeid=int(row[0]),
                             clientid=int(row[1]),
                             programid=int(row[2]),
                             posterid=int(row[3]),
-                            dateposted=datetime.strptime(row[4],'%Y/%m/%d %H:%M:%S'),
-                            transactiondate=datetime.strptime(row[5],'%Y/%m/%d %H:%M:%S'),
+                            dateposted=dateposted,
+                            transactiondate=transactiondate,
                             transactiontype=int(row[6]),
                             description=row[7],
                             amount=Decimal(row[8]),
                             office=int(row[9]),
-                            modifiedid=int(row[10]),
-                            modificationdate=datetime.strptime(row[11],'%Y/%m/%d %H:%M:%S'),
+                            modifiedid=modifiedid,
+                            modificationdate=modificationdate,
                         )
         else:
             context ={
