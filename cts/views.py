@@ -122,7 +122,7 @@ def upload_mast(request):
                     if mast:
                         mast.clientid=int(row[1])
                         mast.programid=int(row[2])
-                        mast.mastdate=datetime.strptime(row[3],'%Y/%m/%d %H:%M:%S')
+                        mast.mastdate=datetime.strptime(row[3],'%Y-%m-%d %H:%M:%S')
                         mast.answers=row[4]
                         mast.ans21times=ans21times
                         mast.ans22times=ans22times
@@ -132,6 +132,10 @@ def upload_mast(request):
                         mast.save()
                         print("Prints")
                 except ObjectDoesNotExist:
+                    if row[5] == '':
+                        ans21times=0
+                    else:
+                        ans21times=int(row[5])
                     if row[6] == '':
                         ans22times=0
                     else:
@@ -140,9 +144,9 @@ def upload_mast(request):
                         mastid=int(row[0]),
                         clientid=int(row[1]),
                         programid=int(row[2]),
-                        mastdate=datetime.strptime(row[3],'%Y/%m/%d %H:%M:%S'),
+                        mastdate=datetime.strptime(row[3],'%Y-%m-%d %H:%M:%S'),
                         answers=row[4],
-                        ans21times=int(row[5]),
+                        ans21times=ans21times,
                         ans22times=ans22times,
                         mastscore=int(row[7]),
                         maststat=int(row[8]),
