@@ -297,10 +297,10 @@ def upload_client(request):
                         income=float(row[25])
 
                     if row[75] == '':
-                        date = '1900/01/01 12:00:00'
-                        lastlogin = datetime.strptime(date,'%Y/%m/%d %H:%M:%S')
+                        date = '1900-01-01 12:00:00'
+                        lastlogin = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
                     else:
-                        lastlogin=datetime.strptime(row[75],'%Y/%m/%d %H:%M:%S')
+                        lastlogin=datetime.strptime(row[75],'%Y-%m-%d %H:%M:%S')
                     _, created = Clients.objects.update_or_create(
                         userid=int(row[0]),
                         firstname=row[1],
