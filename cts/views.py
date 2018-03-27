@@ -282,6 +282,10 @@ def upload_client(request):
                         origin=0
                     else:
                         origin=int(row[20])
+                    if row[21] == '':
+                        mstatus=0
+                    else:
+                        mstatus=int(row[21])
                     if row[22] == '':
                         educationyears=0
                     else:
@@ -313,7 +317,7 @@ def upload_client(request):
                         indigent=row[18],
                         interpreter=row[19],
                         origin=origin,
-                        mstatus=int(row[21]),
+                        mstatus=mstatus,
                         educationyears=educationyears,
                         occupation=row[23],
                         empstatus=row[24],
