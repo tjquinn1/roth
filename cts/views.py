@@ -174,6 +174,12 @@ def upload_client(request):
             io_string = io.StringIO(decoded_file)
             for row in csv.reader(io_string, delimiter=',', quotechar='"'):
                 try:
+                    client = Clients.objects.get(userid=int(row[0]))
+                    if row[16] == '':
+                        date = '1900-01-01'
+                        dob = datetime.strptime(date,'%Y-%m-%d')
+                    else:
+                        dob=datetime.strptime(row[16],'%Y-%m-%d')
                     if row[20] == '':
                         origin=0
                     else:
@@ -188,7 +194,6 @@ def upload_client(request):
                         income=0.0
                     else:
                         income=float(row[25])
-                    client = Clients.objects.get(userid=int(row[0]))
                     if client:
                         client.firstname=row[1]
                         client.middlename=row[2]
@@ -205,7 +210,7 @@ def upload_client(request):
                         client.homephone=row[13]
                         client.workphone=row[14]
                         client.ssn=row[15]
-                        client.dob= datetime.strptime(row[16], '%Y-%m-%d')
+                        client.dob= dob
                         client.gender=row[17]
                         client.indigent=row[18]
                         client.interpreter=row[19]
@@ -268,6 +273,11 @@ def upload_client(request):
                         client.totaltime=int(row[76])
                         client.save()
                 except ObjectDoesNotExist:
+                    if row[16] == '':
+                        date = '1900-01-01'
+                        dob = datetime.strptime(date,'%Y-%m-%d')
+                    else:
+                        dob=datetime.strptime(row[16],'%Y-%m-%d')
                     if row[20] == '':
                         origin=0
                     else:
@@ -298,7 +308,7 @@ def upload_client(request):
                         homephone=row[13],
                         workphone=row[14],
                         ssn=row[15],
-                        dob= datetime.strptime(row[16], '%Y-%m-%d'),
+                        dob= dob,
                         gender=row[17],
                         indigent=row[18],
                         interpreter=row[19],
