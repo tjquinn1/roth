@@ -205,21 +205,21 @@ def upload_client(request):
                         income=float(row[25])
 
                     if row[66] == '':
-                        date = '1900/01/01 12:00:00'
-                        created = datetime.strptime(date,'%Y/%m/%d %H:%M:%S')
+                        date = '1900-01-01 12:00:00'
+                        created = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
                     else:
-                        created = datetime.strptime(row[66],'%Y/%m/%d %H:%M:%S')
+                        created = datetime.strptime(row[66],'%Y-%m-%d %H:%M:%S')
 
                     if row[73] == '':
-                        date = '1900/01/01 12:00:00'
-                        truthdate = datetime.strptime(date,'%Y/%m/%d %H:%M:%S')
+                        date = '1900-01-01 12:00:00'
+                        truthdate = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
                     else:
-                        truthdate = datetime.strptime(row[73],'%Y/%m/%d %H:%M:%S')
+                        truthdate = datetime.strptime(row[73],'%Y-%m-%d %H:%M:%S')
                     if row[75] == '':
-                        date = '1900/01/01 12:00:00'
-                        lastlogin = datetime.strptime(date,'%Y/%m/%d %H:%M:%S')
+                        date = '1900-01-01 12:00:00'
+                        lastlogin = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
                     else:
-                        lastlogin=datetime.strptime(row[75],'%Y/%m/%d %H:%M:%S')
+                        lastlogin=datetime.strptime(row[75],'%Y-%m-%d %H:%M:%S')
                     if client:
                         client.firstname=row[1]
                         client.middlename=row[2]
@@ -323,22 +323,22 @@ def upload_client(request):
                         income=float(row[25])
 
                     if row[66] == '':
-                        date = '1900/01/01 12:00:00'
-                        created = datetime.strptime(date,'%Y/%m/%d %H:%M:%S')
+                        date = '1900-01-01 12:00:00'
+                        created = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
                     else:
-                        created = datetime.strptime(row[66],'%Y/%m/%d %H:%M:%S')
+                        created = datetime.strptime(row[66],'%Y-%m-%d %H:%M:%S')
 
                     if row[73] == '':
-                        date = '1900/01/01 12:00:00'
-                        truthdate = datetime.strptime(date,'%Y/%m/%d %H:%M:%S')
+                        date = '1900-01-01 12:00:00'
+                        truthdate = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
                     else:
-                        truthdate = datetime.strptime(row[73],'%Y/%m/%d %H:%M:%S')
+                        truthdate = datetime.strptime(row[73],'%Y-%m-%d %H:%M:%S')
 
                     if row[75] == '':
-                        date = '1900/01/01 12:00:00'
-                        lastlogin = datetime.strptime(date,'%Y/%m/%d %H:%M:%S')
+                        date = '1900-01-01 12:00:00'
+                        lastlogin = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
                     else:
-                        lastlogin=datetime.strptime(row[75],'%Y/%m/%d %H:%M:%S')
+                        lastlogin=datetime.strptime(row[75],'%Y-%m-%d %H:%M:%S')
                     _, created = Clients.objects.update_or_create(
                         userid=int(row[0]),
                         firstname=row[1],
